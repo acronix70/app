@@ -149,7 +149,7 @@ async function uploadImage(file) {
 
 // Leer workflow JSON
 async function readWorkflowAPI() {
-    const response = await fetch('workflow_api.json');
+    const response = await fetch('js/workflow_api.json');
     if (!response.ok) {
         throw new Error("Error al leer el archivo workflow_api.json.");
     }
