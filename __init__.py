@@ -9,7 +9,8 @@ WEBROOT_APPS = os.path.join(os.path.dirname(os.path.realpath(__file__)), "docs")
 def apps_entrance(request):
     return web.FileResponse(os.path.join(WEBROOT_APPS, "index.html"))
 
-server.PromptServer.instance.routes.static("/", 
-path=os.path.join(WEBROOT_APPS))  # Ruta para servir el archivo config.json
-
+# Sirve las carpetas estáticas necesarias
+server.PromptServer.instance.routes.static("/css", os.path.join(BASE_DIR, "css"))
+server.PromptServer.instance.routes.static("/js", os.path.join(BASE_DIR, "js"))
+server.PromptServer.instance.routes.static("/js", os.path.join(BASE_DIR, "workflow_api"))
 
