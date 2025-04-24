@@ -10,6 +10,5 @@ def apps_entrance(request):
     return web.FileResponse(os.path.join(WEBROOT_APPS, "index.html"))
 
 # Sirve las carpetas estáticas necesarias
-server.PromptServer.instance.routes.static("/", 
-path=os.path.join(WEBROOT_APPS))  # Ruta para servir el archivo config.json
+server.PromptServer.instance.routes.static("/", path=WEBROOT_APPS)
 
