@@ -112,7 +112,7 @@ document.getElementById('imageForm').addEventListener('submit', async function(e
                     for (const image of images) {
                         const imageUrl = `http://${serverAddress}/view?filename=${encodeURIComponent(image.filename)}&subfolder=${encodeURIComponent(image.subfolder)}&type=${encodeURIComponent(image.type)}`;
 
-                        const response = await fetch(imageUrl);
+                        const response = await fetch(imageUrl, { mode: 'cors' }); // Añadimos modo CORS
                         const blob = await response.blob();
                         const url = URL.createObjectURL(blob);
 
@@ -138,14 +138,18 @@ document.getElementById('imageForm').addEventListener('submit', async function(e
     }
 });
 
-// Subir imagen al backend
+// Subir imagen al backend con manejo de CORS
 async function uploadImage(file) {
     const formData = new FormData();
     formData.append('image', file);
 
     const response = await fetch(`http://${serverAddress}/upload/image`, {
         method: 'POST',
-        body: formData
+        body: formData,
+        headers: {
+            'Access-Control-Allow-Origin': '*', // Cabecera para permitir CORS
+        },
+        mode: 'cors'
     });
 
     if (!response.ok) {
@@ -154,24 +158,33 @@ async function uploadImage(file) {
     return response.json();
 }
 
-// Leer workflow JSON
+// Leer workflow JSON con manejo de CORS
 async function readWorkflowAPI() {
-    const response = await fetch('workflow_api.json');
+    const response = await fetch('/home/js/workflow_api.json', {
+        method: 'GET',
+        headers: {
+            'Access-Control-Allow-Origin': '*', // Cabecera para permitir CORS
+        },
+        mode: 'cors'
+    });
+
     if (!response.ok) {
         throw new Error("Error al leer el archivo workflow_api.json.");
     }
     return response.json();
 }
 
-// Encolar el prompt
+// Encolar el prompt con manejo de CORS
 async function queuePrompt(promptWorkflow) {
     const postData = JSON.stringify({ prompt: promptWorkflow, client_id: clientId });
 
     const response = await fetch(`http://${serverAddress}/prompt`, {
         method: 'POST',
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*', // Cabecera para permitir CORS
         },
+        mode: 'cors',
         body: postData
     });
 
@@ -210,7 +223,4 @@ function updateWorkflow(imageName) {
     promptWorkflow["18"]["inputs"]["seed"] = Math.floor(Math.random() * 18446744073709551614) + 1;
 
     promptWorkflow["15"]["inputs"]["image"] = imageName;
-
-   // console.log("Seed actualizado:", promptWorkflow["18"]["inputs"]["seed"]);
-    //console.log("Workflow actualizado:", promptWorkflow);
 }
