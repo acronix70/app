@@ -5,7 +5,7 @@ from aiohttp import web
 # HOME_APPS
 WEBROOT_APPS = os.path.join(os.path.dirname(os.path.realpath(__file__)), "home")
 
-@server.PromptServer.instance.routes.get("/home")
+@server.PromptServer.instance.routes.get("/")
 def apps_entrance(request):
     return web.FileResponse(os.path.join(WEBROOT_APPS, "index.html"))
 
